@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Chess-like Game</title>
+    <style>
+        #board {
+            display: grid;
+            grid-template-columns: repeat(5, 60px);
+            grid-template-rows: repeat(5, 60px);
+            gap: 5px;
+        }
+        .cell {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .playerA {
+            color: blue;
+        }
+        .playerB {
+            color: red;
+        }
+        #controls {
+            margin-top: 20px;
+        }
+        #status, #error {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chess-like Game</h1>
+    <div id="board"></div>
+    <div id="status"></div>
+    <div id="error"></div>
+    <div id="controls">
+        <button onclick="placeCharacters('A', ['P1', 'H1', 'H2', 'H3', 'P2'])">Place A Characters</button>
+        <button onclick="placeCharacters('B', ['P1', 'H1', 'H2', 'H3', 'P2'])">Place B Characters</button>
+        <div id="controls">
+            <!-- Movements for Player A -->
+            <!-- Pawns (P1, P2, P3) -->
+            <h3>Player A</h3>
+            <div>
+                <h4>Pawn A-P1</h4>
+                <button onclick="makeMove('A', 'P1', 'L')">Left</button>
+                <button onclick="makeMove('A', 'P1', 'R')">Right</button>
+                <button onclick="makeMove('A', 'P1', 'F')">Forward</button>
+                <button onclick="makeMove('A', 'P1', 'B')">Backward</button>
+            </div>
+            <div>
+                <h4>Pawn A-P2</h4>
+                <button onclick="makeMove('A', 'P2', 'L')">Left</button>
+                <button onclick="makeMove('A', 'P2', 'R')">Right</button>
+                <button onclick="makeMove('A', 'P2', 'F')">Forward</button>
+                <button onclick="makeMove('A', 'P2', 'B')">Backward</button>
+            </div>
+            <div>
+                <h4>Pawn A-P3</h4>
+                <button onclick="makeMove('A', 'P3', 'L')">Left</button>
+                <button onclick="makeMove('A', 'P3', 'R')">Right</button>
+                <button onclick="makeMove('A', 'P3', 'F')">Forward</button>
+                <button onclick="makeMove('A', 'P3', 'B')">Backward</button>
+            </div>
+        
+            <!-- Hero1 -->
+            <div>
+                <h4>Hero A-H1</h4>
+                <button onclick="makeMove('A', 'H1', 'L')">Left</button>
+                <button onclick="makeMove('A', 'H1', 'R')">Right</button>
+                <button onclick="makeMove('A', 'H1', 'F')">Forward</button>
+                <button onclick="makeMove('A', 'H1', 'B')">Backward</button>
+            </div>
+        
+            <!-- Hero2 -->
+            <div>
+                <h4>Hero A-H2</h4>
+                <button onclick="makeMove('A', 'H2', 'FL')">Forward-Left</button>
+                <button onclick="makeMove('A', 'H2', 'FR')">Forward-Right</button>
+                <button onclick="makeMove('A', 'H2', 'BL')">Backward-Left</button>
+                <button onclick="makeMove('A', 'H2', 'BR')">Backward-Right</button>
+            </div>
+        
+            <!-- Hero3 -->
+            <div>
+                <h4>Hero A-H3</h4>
+                <button onclick="makeMove('A', 'H3', 'FL')">Forward-Left</button>
+                <button onclick="makeMove('A', 'H3', 'FR')">Forward-Right</button>
+                <button onclick="makeMove('A', 'H3', 'BL')">Backward-Left</button>
+                <button onclick="makeMove('A', 'H3', 'BR')">Backward-Right</button>
+                <button onclick="makeMove('A', 'H3', 'RF')">Right-Forward</button>
+                <button onclick="makeMove('A', 'H3', 'RB')">Right-Backward</button>
+                <button onclick="makeMove('A', 'H3', 'LF')">Left-Forward</button>
+                <button onclick="makeMove('A', 'H3', 'LB')">Left-Backward</button>
+            </div>
+        
+            <!-- Movements for Player B -->
+            <h3>Player B</h3>
+            <div>
+                <h4>Pawn B-P1</h4>
+                <button onclick="makeMove('B', 'P1', 'L')">Left</button>
+                <button onclick="makeMove('B', 'P1', 'R')">Right</button>
+                <button onclick="makeMove('B', 'P1', 'F')">Forward</button>
+                <button onclick="makeMove('B', 'P1', 'B')">Backward</button>
+            </div>
+            <div>
+                <h4>Pawn B-P2</h4>
+                <button onclick="makeMove('B', 'P2', 'L')">Left</button>
+                <button onclick="makeMove('B', 'P2', 'R')">Right</button>
+                <button onclick="makeMove('B', 'P2', 'F')">Forward</button>
+                <button onclick="makeMove('B', 'P2', 'B')">Backward</button>
+            </div>
+            <div>
+                <h4>Pawn B-P3</h4>
+                <button onclick="makeMove('B', 'P3', 'L')">Left</button>
+                <button onclick="makeMove('B', 'P3', 'R')">Right</button>
+                <button onclick="makeMove('B', 'P3', 'F')">Forward</button>
+                <button onclick="makeMove('B', 'P3', 'B')">Backward</button>
+            </div>
+        
+            <!-- Hero1 -->
+            <div>
+                <h4>Hero B-H1</h4>
+                <button onclick="makeMove('B', 'H1', 'L')">Left</button>
+                <button onclick="makeMove('B', 'H1', 'R')">Right</button>
+                <button onclick="makeMove('B', 'H1', 'F')">Forward</button>
+                <button onclick="makeMove('B', 'H1', 'B')">Backward</button>
+            </div>
+        
+            <!-- Hero2 -->
+            <div>
+                <h4>Hero B-H2</h4>
+                <button onclick="makeMove('B', 'H2', 'FL')">Forward-Left</button>
+                <button onclick="makeMove('B', 'H2', 'FR')">Forward-Right</button>
+                <button onclick="makeMove('B', 'H2', 'BL')">Backward-Left</button>
+                <button onclick="makeMove('B', 'H2', 'BR')">Backward-Right</button>
+            </div>
+        
+            <!-- Hero3 -->
+            <div>
+                <h4>Hero B-H3</h4>
+                <button onclick="makeMove('B', 'H3', 'FL')">Forward-Left</button>
+                <button onclick="makeMove('B', 'H3', 'FR')">Forward-Right</button>
+                <button onclick="makeMove('B', 'H3', 'BL')">Backward-Left</button>
+                <button onclick="makeMove('B', 'H3', 'BR')">Backward-Right</button>
+                <button onclick="makeMove('B', 'H3', 'RF')">Right-Forward</button>
+                <button onclick="makeMove('B', 'H3', 'RB')">Right-Backward</button>
+                <button onclick="makeMove('B', 'H3', 'LF')">Left-Forward</button>
+                <button onclick="makeMove('B', 'H3', 'LB')">Left-Backward</button>
+            </div>
+        </div>
+        
+        
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        socket.on('game_state', function(data) {
+            const board = document.getElementById('board');
+            board.innerHTML = ''; // Clear the board
+
+            data.grid.forEach((row, rowIndex) => {
+                row.forEach((cell, cellIndex) => {
+                    const cellDiv = document.createElement('div');
+                    cellDiv.className = 'cell';
+                    cellDiv.textContent = cell;
+                    
+                    if (cell.startsWith('A-')) {
+                        cellDiv.classList.add('playerA');
+                    } else if (cell.startsWith('B-')) {
+                        cellDiv.classList.add('playerB');
+                    }
+
+                    cellDiv.addEventListener('click', function() {
+                        handleCellClick(rowIndex, cellIndex);
+                    });
+
+                    board.appendChild(cellDiv);
+                });
+            });
+
+            document.getElementById('status').innerText = "Current turn: " + data.current_turn;
+        });
+
+        socket.on('error', function(data) {
+            document.getElementById('error').innerText = data.error;
+        });
+
+        socket.on('game_over', function(data) {
+            alert("Game over! Winner: " + data.winner);
+        });
+
+        function handleCellClick(row, col) {
+            console.log(`Cell clicked at row ${row}, col ${col}`);
+            // Handle cell click logic
+        }
+
+        function placeCharacters(player, characters) {
+            socket.emit('place_characters', {
+                player: player,
+                characters: characters
+            });
+        }
+
+        function makeMove(player, character, move) {
+            socket.emit('make_move', {
+                player: player,
+                character: character,
+                move: move
+            });
+        }
+    </script>
+</body>
+</html>
